@@ -1,14 +1,17 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import FormField from '../components/FormField';
 import Button from '../components/Button';
+import { useAuth } from '../context/AuthContext';
 import './Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,8 +21,13 @@ const Login = () => {
       return;
     }
 
-    setError('');
-    navigate('/');
+    try {
+      login(email, password);
+      const from = (location.state as { from?: string })?.from || '/';
+      navigate(from);
+    } catch (err) {
+      setError((err as Error).message);
+    }
   };
 
   return (

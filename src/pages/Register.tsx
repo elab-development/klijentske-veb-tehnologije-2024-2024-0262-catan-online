@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import FormField from '../components/FormField';
 import Button from '../components/Button';
+import { useAuth } from '../context/AuthContext';
 import './Register.css';
 
 const Register = () => {
@@ -10,6 +11,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState<{ password?: string; confirmPassword?: string }>({});
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -30,8 +32,13 @@ const Register = () => {
       return;
     }
 
-    setErrors({});
-    navigate('/login');
+    try {
+      register(username, email, password);
+      setErrors({});
+      navigate('/login');
+    } catch (err) {
+      setErrors({ confirmPassword: (err as Error).message });
+    }
   };
 
   return (

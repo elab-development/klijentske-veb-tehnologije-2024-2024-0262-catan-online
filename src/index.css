@@ -1,15 +1,20 @@
 @import './styles/variables.css';
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+*{
+box-sizing: border-box;
+margin: 0;
+padding: 0;
 }
 
 body {
   font-family: var(--font-body);
   background-color: var(--color-bg);
-  color: var(--color-text);
+  background-image: url('./assets/hex-background.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: var(--color-heading);
 }
 
 a {

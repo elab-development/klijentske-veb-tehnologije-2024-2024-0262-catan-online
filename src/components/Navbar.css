@@ -38,3 +38,9 @@
   opacity: 1;
   border-bottom: 2px solid var(--color-primary);
 }
+.navbar__link--button {
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+}

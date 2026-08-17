@@ -1,0 +1,19 @@
+.info-card {
+  background-color: var(--color-card-bg);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.info-card__title {
+  font-family: var(--font-heading);
+  color: var(--color-heading);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-card__description {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}

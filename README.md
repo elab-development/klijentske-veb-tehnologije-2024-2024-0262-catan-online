@@ -1,32 +1,46 @@
-# React + TypeScript + Vite
+# Catan Online
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Klijentska veb aplikacija za igranje lokalnih (offline) partija društvene igre Catan, razvijena u okviru seminarskog rada iz predmeta Klijentske veb tehnologije.
 
-Currently, two official plugins are available:
+Aplikacija omogućava kreiranje lokalnih partija sa nasumično generisanom heksagonalnom tablom, simulaciju bacanja kockica preko spoljnog API-ja, praćenje raspodele resursa igrača i pregled statistike odigranih partija — sve sačuvano lokalno u browseru korisnika.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tehnologije
 
-## React Compiler
+- **React 19** + **TypeScript** — biblioteka za izgradnju korisničkog interfejsa
+- **Vite** — build alat i razvojni server
+- **react-router-dom** — klijentska navigacija i rutiranje
+- **react-konva** — grafički prikaz heksagonalne table igre
+- **Random.org JSON-RPC API** — generisanje nasumičnih brojeva za raspored table i bacanje kockica
+- **localStorage** — čuvanje lokalnih partija i podataka o korisniku
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Funkcionalnosti
 
-## Expanding the Oxlint configuration
+- Prijava i registracija korisnika (lokalna simulacija)
+- Nasumično generisanje rasporeda heksagonalnih polja table
+- Simulacija bacanja kockica sa prikazom rezultata
+- Praćenje i prikaz raspodele resursa po igraču
+- Čuvanje i učitavanje lokalnih partija
+- Statistika partije (broj bacanja, najčešći rezultati, raspodela resursa)
+- Profil korisnika sa pregledom istorije partija
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Pokretanje projekta lokalno
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+Potreban je instaliran [Node.js](https://nodejs.org) (LTS verzija).
+
+```bash
+# 1. Kloniraj repozitorijum
+git clone https://github.com/elab-development/klijentske-veb-tehnologije-2024-2024-0262-catan-online.git
+
+# 2. Uđi u folder projekta
+cd klijentske-veb-tehnologije-2024-2024-0262-catan-online
+
+# 3. Instaliraj zavisnosti
+npm install
+
+# 4. Pokreni razvojni server
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Aplikacija će biti dostupna na `http://localhost:5173`.
+
+

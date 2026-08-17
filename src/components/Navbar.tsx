@@ -12,7 +12,7 @@ const Navbar = () => {
         <NavLink to="/partije" className="navbar__link">PARTIJE</NavLink>
         <NavLink to="/statistika" className="navbar__link">STATISTIKA</NavLink>
         <NavLink to="/profil" className="navbar__link">PROFIL</NavLink>
-        <NavLink to="/login" className="navbar__link">ODJAVA</NavLink>
+        <NavLink to="/login" className="navbar__link">PRIJAVA</NavLink>
       </div>
     </nav>
   );

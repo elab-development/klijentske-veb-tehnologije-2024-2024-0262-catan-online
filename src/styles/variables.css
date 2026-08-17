@@ -1,0 +1,11 @@
+:root {
+  --color-header-bg: #4C2501;
+  --color-bg: #FAF6EF;
+  --color-card-bg: #FFFFFF;
+  --color-primary: #5B2A06;
+  --color-heading: #3A1F12;
+  --color-text-secondary: #6B4A32;
+  --color-text-light: #FAF6EF;
+  --font-heading: Georgia, 'Times New Roman', serif;
+  --font-body: 'Segoe UI', Arial, sans-serif;
+}

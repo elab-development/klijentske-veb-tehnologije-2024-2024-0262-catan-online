@@ -1,0 +1,40 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-header-bg);
+  padding: 1rem 2rem;
+}
+
+.navbar__logo {
+  color: var(--color-text-light);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.navbar__links {
+  display: flex;
+  gap: 2rem;
+}
+
+.navbar__link {
+  color: var(--color-text-light);
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+.navbar__link:hover {
+  opacity: 1;
+}
+
+.navbar__link.active {
+  font-weight: bold;
+  opacity: 1;
+  border-bottom: 2px solid var(--color-primary);
+}

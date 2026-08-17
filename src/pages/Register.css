@@ -1,0 +1,65 @@
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 70px);
+  padding: 3rem;
+}
+
+.register-card {
+  background-color: var(--color-card-bg);
+  padding: 4rem 3.5rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 560px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.register-title {
+  font-family: var(--font-heading);
+  color: var(--color-heading);
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.register-subtitle {
+  font-size: 1.05rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.register-page form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-page .form-field__label {
+  font-size: 0.95rem;
+}
+
+.register-page .form-field__input {
+  padding: 1rem 1.1rem;
+  font-size: 1.05rem;
+}
+
+.register-page .form-field {
+  margin-bottom: 1.5rem;
+}
+
+.register-page .btn {
+  margin-top: 1rem;
+  padding: 1rem 1.5rem;
+  font-size: 1.05rem;
+}
+
+.register-footer {
+  margin-top: 1.8rem;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+}
+
+.register-footer a {
+  color: var(--color-primary);
+  font-weight: bold;
+}

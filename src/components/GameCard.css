@@ -1,0 +1,66 @@
+.game-card {
+  background-color: var(--color-card-bg);
+  border-radius: 8px;
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1rem;
+}
+
+.game-cardname {
+  font-family: var(--font-heading);
+  color: var(--color-heading);
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+
+.game-cardmeta {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.game-cardstatus {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+}
+
+.game-cardstatus--active {
+  background-color: #e8f0d8;
+  color: #4a6741;
+}
+
+.game-cardstatus--done {
+  background-color: #eee;
+  color: #777;
+}
+
+.game-cardactions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.game-cardopen,
+.game-carddelete {
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.game-cardopen {
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+}
+
+.game-carddelete {
+  background-color: transparent;
+  color: #b3261e;
+  border: 1px solid #b3261e;
+}

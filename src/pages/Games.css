@@ -1,0 +1,90 @@
+.games-page {
+  padding: 3rem 4rem;
+}
+
+.games-title {
+  font-family: var(--font-heading);
+  color: var(--color-heading);
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.games-create {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  background-color: var(--color-card-bg);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.games-create .form-field {
+  margin-bottom: 0;
+  min-width: 220px;
+}
+
+.games-createplayers {
+  display: flex;
+  flex-direction: column;
+}
+
+.games-createselect,
+.games-filters select {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #d8cbb8;
+  border-radius: 4px;
+  background-color: var(--color-bg);
+  font-size: 0.9rem;
+}
+
+.games-filters {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.games-filters__group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.games-list {
+  max-width: 700px;
+}
+
+.games-empty {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.games-pagination {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+  max-width: 700px;
+  justify-content: center;
+}
+
+.games-pagination button {
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.games-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.games-pagination span {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}

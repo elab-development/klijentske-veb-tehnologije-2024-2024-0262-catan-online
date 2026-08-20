@@ -69,7 +69,10 @@
   }
 }
 
-.home-cards > *:last-child:nth-child(odd) {
+.home-cards__pravila {
   grid-column: 1 / -1;
-  max-width: 260px;
+  justify-self: center;
+  max-width: 280px;
 }
+
+

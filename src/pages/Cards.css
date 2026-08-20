@@ -14,6 +14,21 @@
   margin-bottom: 2rem;
 }
 
+.rules-box {
+  background-color: var(--color-card-bg);
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1rem;
+  max-width: 900px;
+}
+
+.rules-list {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding-left: 1.2rem;
+}
+
 .cards-section-title {
   font-family: var(--font-heading);
   color: var(--color-heading);
@@ -24,7 +39,18 @@
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  max-width: 1000px;
+}
+
+@media (max-width: 1100px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
 }

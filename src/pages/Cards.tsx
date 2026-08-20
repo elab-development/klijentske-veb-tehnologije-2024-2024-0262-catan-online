@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import CardTile from '../components/CardTile';
+import CardDetailModal from '../components/CardDetailModal';
 import drvoImg from '../assets/cards/drvo.jpeg';
 import ovcaImg from '../assets/cards/ovca.jpeg';
 import zitoImg from '../assets/cards/zito.jpeg';
@@ -15,7 +17,14 @@ import velikaDvoranaImg from '../assets/cards/velika-dvorana.jpeg';
 import kapelaImg from '../assets/cards/kapela.jpeg';
 import './Cards.css';
 
-const resourceCards = [
+interface CardData {
+  title: string;
+  image: string;
+  acquisition: string;
+  purpose: string;
+}
+
+const resourceCards: CardData[] = [
   {
     title: 'Ovca',
     image: ovcaImg,
@@ -48,7 +57,7 @@ const resourceCards = [
   },
 ];
 
-const developmentCards = [
+const developmentCards: CardData[] = [
   {
     title: 'Vitez',
     image: vitezImg,
@@ -106,24 +115,46 @@ const developmentCards = [
 ];
 
 const Cards = () => {
+  const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
+
   return (
     <div className="cards-page">
       <h1 className="cards-title">Pravila i karte</h1>
       <p className="cards-subtitle">Pregled resursa i razvojnih karata korišćenih u igri.</p>
 
+      <div className="rules-box">
+        <h2 className="cards-section-title">Osnovna pravila partije</h2>
+        <ul className="rules-list">
+          <li>Igra se sa 2 do 4 igrača na nasumično generisanoj heksagonalnoj tabli.</li>
+          <li>Igrači naizmenično bacaju kockice — svako bacanje dodeljuje resurse igraču koji je trenutno na potezu, prema poljima čiji broj odgovara zbiru kockica.</li>
+          <li>Partija traje ukupno 15 bacanja kockica.</li>
+          <li>Nakon poslednjeg bacanja, pobednik je igrač sa najvećim ukupnim brojem sakupljenih resursa.</li>
+        </ul>
+      </div>
+
       <h2 className="cards-section-title">Resursi</h2>
       <div className="cards-grid">
         {resourceCards.map((card) => (
-          <CardTile key={card.title} {...card} />
+          <CardTile key={card.title} {...card} onClick={() => setSelectedCard(card)} />
         ))}
       </div>
 
       <h2 className="cards-section-title">Razvojne karte</h2>
       <div className="cards-grid">
         {developmentCards.map((card) => (
-          <CardTile key={card.title} {...card} />
+          <CardTile key={card.title} {...card} onClick={() => setSelectedCard(card)} />
         ))}
       </div>
+
+      {selectedCard && (
+        <CardDetailModal
+          image={selectedCard.image}
+          title={selectedCard.title}
+          acquisition={selectedCard.acquisition}
+          purpose={selectedCard.purpose}
+          onClose={() => setSelectedCard(null)}
+        />
+      )}
     </div>
   );
 };

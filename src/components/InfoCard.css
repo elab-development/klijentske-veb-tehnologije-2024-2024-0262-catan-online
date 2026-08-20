@@ -27,3 +27,16 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
 }
+
+.info-card--accent {
+  background-color: var(--color-primary);
+}
+
+.info-card--accent .info-cardtitle,
+.info-card--accent .info-carddescription {
+  color: var(--color-text-light);
+}
+
+.info-card--accent:hover {
+  opacity: 0.92;
+}

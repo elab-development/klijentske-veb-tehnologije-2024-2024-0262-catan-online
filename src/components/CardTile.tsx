@@ -5,11 +5,12 @@ interface CardTileProps {
   title: string;
   acquisition: string;
   purpose: string;
+  onClick?: () => void;
 }
 
-const CardTile = ({ image, title, acquisition, purpose }: CardTileProps) => {
+const CardTile = ({ image, title, acquisition, purpose, onClick }: CardTileProps) => {
   return (
-    <div className="card-tile">
+    <div className="card-tile" onClick={onClick}>
       <img src={image} alt={title} className="card-tileimage" />
       <div className="card-tilebody">
         <h3 className="card-tiletitle">{title}</h3>

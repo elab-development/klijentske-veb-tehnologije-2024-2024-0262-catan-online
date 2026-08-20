@@ -81,3 +81,40 @@
   font-size: 0.85rem;
   color: var(--color-text-secondary);
 }
+
+.dice-section {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dice-result {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.dice-face {
+  background-color: var(--color-card-bg);
+  border: 2px solid var(--color-primary);
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: var(--color-heading);
+}
+
+.dice-total {
+  font-weight: bold;
+  color: var(--color-heading);
+}
+
+.dice-source {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}

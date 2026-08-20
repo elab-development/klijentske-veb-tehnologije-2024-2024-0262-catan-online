@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { getGameById } from '../services/gameStorage';
+import { getGameById, updateGame } from '../services/gameStorage';
 import type { StoredGame } from '../services/gameStorage';
+import { rollDiceWithFallback } from '../services/diceService';
+import type { DiceResult } from '../models/IDiceRoller';
 import HexBoard from '../components/HexBoard';
+import Button from '../components/Button';
 import './GameBoard.css';
 
 const GameBoard = () => {
@@ -10,6 +13,9 @@ const GameBoard = () => {
   const navigate = useNavigate();
   const [game, setGame] = useState<StoredGame | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [rolling, setRolling] = useState(false);
+  const [lastRoll, setLastRoll] = useState<DiceResult | null>(null);
+  const [rollSource, setRollSource] = useState<'random.org' | 'lokalno' | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -20,6 +26,36 @@ const GameBoard = () => {
       setNotFound(true);
     }
   }, [id]);
+
+  const handleRoll = async () => {
+    if (!game) return;
+    setRolling(true);
+
+    const { result, source } = await rollDiceWithFallback();
+    setLastRoll(result);
+    setRollSource(source);
+
+    const updatedPlayers = game.players.map((p) => ({ ...p, resources: { ...p.resources } }));
+    const matchingTiles = game.board.filter(
+      (tile) => tile.numberToken === result.total && tile.resource !== 'pustinja'
+    );
+
+    matchingTiles.forEach((tile) => {
+      const randomIndex = Math.floor(Math.random() * updatedPlayers.length);
+      const key = tile.resource;
+      updatedPlayers[randomIndex].resources[key] = (updatedPlayers[randomIndex].resources[key] || 0) + 1;
+    });
+
+    const updated: StoredGame = {
+      ...game,
+      players: updatedPlayers,
+      rollHistory: [...game.rollHistory, result],
+    };
+
+    updateGame(updated);
+    setGame(updated);
+    setRolling(false);
+  };
 
   if (notFound) {
     return (
@@ -44,8 +80,26 @@ const GameBoard = () => {
       </div>
 
       <div className="board-layout">
-        <div className="board-canvas">
-          <HexBoard tiles={game.board} />
+        <div>
+          <div className="board-canvas">
+            <HexBoard tiles={game.board} />
+          </div>
+
+          <div className="dice-section">
+            <Button onClick={handleRoll} disabled={rolling}>
+              {rolling ? 'Bacanje...' : 'Baci kockice'}
+            </Button>
+            {lastRoll && (
+              <div className="dice-result">
+                <span className="dice-face">{lastRoll.die1}</span>
+                <span className="dice-face">{lastRoll.die2}</span>
+                <span className="dice-total">= {lastRoll.total}</span>
+                <span className="dice-source">
+                  ({rollSource === 'random.org' ? 'Random.org' : 'lokalno generisano'})
+                </span>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="board-players">

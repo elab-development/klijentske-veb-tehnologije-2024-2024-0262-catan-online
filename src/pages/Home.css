@@ -68,3 +68,8 @@
     justify-content: center;
   }
 }
+
+.home-cards > *:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  max-width: 260px;
+}

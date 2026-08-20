@@ -17,3 +17,13 @@
   font-size: 0.9rem;
   line-height: 1.4;
 }
+
+.info-card--clickable {
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.info-card--clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,36 @@
+.card-tile {
+  display: flex;
+  gap: 1.2rem;
+  background-color: var(--color-card-bg);
+  border-radius: 8px;
+  padding: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1.2rem;
+}
+
+.card-tileimage {
+  width: 100px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.card-tilebody {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-tiletitle {
+  font-family: var(--font-heading);
+  color: var(--color-heading);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-tiletext {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+  margin-bottom: 0.3rem;
+}

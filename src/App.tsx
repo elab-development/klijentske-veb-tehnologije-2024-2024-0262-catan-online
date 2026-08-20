@@ -1,3 +1,4 @@
+import Cards from './pages/Cards';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -48,6 +49,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Statistics />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+             path="/pravila"
+             element={
+              <ProtectedRoute>
+                 <Cards />
               </ProtectedRoute>
             }
           />

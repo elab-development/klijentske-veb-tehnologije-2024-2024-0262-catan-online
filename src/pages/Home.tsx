@@ -40,6 +40,13 @@ const Home = () => {
             title="Statistika partije"
             description="Pregled broja bacanja, najčešćih rezultata i raspodele resursa."
           />
+          <InfoCard
+            title="Pravila"
+            description="Pregled resursa i razvojnih karata korišćenih u igri."
+            onClick={() => navigate('/pravila')}
+          />
+
+
         </div>
       </div>
 

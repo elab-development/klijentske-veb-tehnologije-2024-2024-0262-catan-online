@@ -1,0 +1,30 @@
+.cards-page {
+  padding: 3rem 4rem;
+}
+
+.cards-title {
+  font-family: var(--font-heading);
+  color: var(--color-heading);
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.cards-subtitle {
+  color: var(--color-text-secondary);
+  margin-bottom: 2rem;
+}
+
+.cards-section-title {
+  font-family: var(--font-heading);
+  color: var(--color-heading);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 1rem;
+  max-width: 1000px;
+}

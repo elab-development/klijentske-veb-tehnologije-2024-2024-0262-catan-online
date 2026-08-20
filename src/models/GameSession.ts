@@ -13,6 +13,7 @@ export class GameSession {
   rollHistory: DiceResult[];
   status: GameStatus;
   createdAt: string;
+  currentPlayerIndex: number;
 
   constructor(name: string) {
     this.id = crypto.randomUUID();
@@ -22,6 +23,7 @@ export class GameSession {
     this.rollHistory = [];
     this.status = 'u toku';
     this.createdAt = new Date().toISOString();
+    this.currentPlayerIndex = 0;
   }
 
   addPlayer(name: string, color: string) {
@@ -32,6 +34,14 @@ export class GameSession {
     const result = await roller.roll();
     this.rollHistory.push(result);
     return result;
+  }
+
+  getCurrentPlayer(): Player | null {
+    return this.players[this.currentPlayerIndex] ?? null;
+  }
+
+  nextTurn() {
+    this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.length;
   }
 
   getVictoryLeader(): Player | null {

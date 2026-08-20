@@ -17,6 +17,7 @@ export interface StoredGame {
   players: StoredPlayer[];
   rollHistory: DiceResult[];
   status: 'u toku' | 'zavrsena';
+  currentPlayerIndex: number;
   createdAt: string;
 }
 
@@ -54,6 +55,7 @@ export const createGame = (name: string, playerNames: string[]): StoredGame => {
     })),
     rollHistory: session.rollHistory,
     status: session.status,
+    currentPlayerIndex: session.currentPlayerIndex,
     createdAt: session.createdAt,
   };
 

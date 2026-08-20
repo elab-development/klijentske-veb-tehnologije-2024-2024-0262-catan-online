@@ -36,20 +36,24 @@ const GameBoard = () => {
     setRollSource(source);
 
     const updatedPlayers = game.players.map((p) => ({ ...p, resources: { ...p.resources } }));
+    const currentPlayer = updatedPlayers[game.currentPlayerIndex];
+
     const matchingTiles = game.board.filter(
       (tile) => tile.numberToken === result.total && tile.resource !== 'pustinja'
     );
 
     matchingTiles.forEach((tile) => {
-      const randomIndex = Math.floor(Math.random() * updatedPlayers.length);
       const key = tile.resource;
-      updatedPlayers[randomIndex].resources[key] = (updatedPlayers[randomIndex].resources[key] || 0) + 1;
+      currentPlayer.resources[key] = (currentPlayer.resources[key] || 0) + 1;
     });
+
+    const nextPlayerIndex = (game.currentPlayerIndex + 1) % updatedPlayers.length;
 
     const updated: StoredGame = {
       ...game,
       players: updatedPlayers,
       rollHistory: [...game.rollHistory, result],
+      currentPlayerIndex: nextPlayerIndex,
     };
 
     updateGame(updated);
@@ -70,6 +74,8 @@ const GameBoard = () => {
     return <div className="board-page">Učitavanje...</div>;
   }
 
+  const currentPlayer = game.players[game.currentPlayerIndex];
+
   return (
     <div className="board-page">
       <div className="board-header">
@@ -86,9 +92,14 @@ const GameBoard = () => {
           </div>
 
           <div className="dice-section">
-            <Button onClick={handleRoll} disabled={rolling}>
-              {rolling ? 'Bacanje...' : 'Baci kockice'}
-            </Button>
+            <div>
+              <p className="current-turn">
+                Na potezu: <strong>{currentPlayer?.name}</strong>
+              </p>
+              <Button onClick={handleRoll} disabled={rolling}>
+                {rolling ? 'Bacanje...' : 'Baci kockice'}
+              </Button>
+            </div>
             {lastRoll && (
               <div className="dice-result">
                 <span className="dice-face">{lastRoll.die1}</span>
@@ -104,11 +115,17 @@ const GameBoard = () => {
 
         <div className="board-players">
           <h2 className="board-players__title">Igrači</h2>
-          {game.players.map((player) => (
-            <div key={player.id} className="player-card">
+          {game.players.map((player, index) => (
+            <div
+              key={player.id}
+              className={`player-card ${index === game.currentPlayerIndex ? 'player-card--active' : ''}`}
+            >
               <div className="player-card__header">
                 <span className="player-card__dot" style={{ backgroundColor: player.color }} />
                 <span className="player-card__name">{player.name}</span>
+                {index === game.currentPlayerIndex && (
+                  <span className="player-card__turn-badge">na potezu</span>
+                )}
               </div>
               <div className="player-card__resources">
                 <span>Drvo: {player.resources.drvo}</span>

@@ -170,3 +170,37 @@
 .player-card--winner {
   border: 2px solid #4a6741;
 }
+
+.player-card__avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-primary);
+}
+
+.dice-section__actions {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.card-draw-result {
+  margin-top: 0.8rem;
+  background-color: #f3e6cf;
+  border: 1px solid #d9a86c;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  color: var(--color-heading);
+}
+
+.player-card__dev-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid #f2e8d8;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}

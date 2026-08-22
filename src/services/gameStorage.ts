@@ -6,8 +6,10 @@ export interface StoredPlayer {
   id: string;
   name: string;
   color: string;
+  avatar?: string;
   resources: Record<string, number>;
   victoryPoints: number;
+  developmentCards: string[];
 }
 
 export interface StoredGame {
@@ -37,21 +39,28 @@ export const getAllGames = (): StoredGame[] => getGames();
 export const getGameById = (id: string): StoredGame | undefined =>
   getGames().find((g) => g.id === id);
 
-export const createGame = (name: string, playerNames: string[]): StoredGame => {
+interface PlayerInput {
+  name: string;
+  avatar?: string;
+}
+
+export const createGame = (name: string, players: PlayerInput[]): StoredGame => {
   const colors = ['#C1652F', '#4A6741', '#8A8D91', '#E8B923'];
   const session = new GameSession(name);
-  playerNames.forEach((playerName, index) => session.addPlayer(playerName, colors[index % colors.length]));
+  players.forEach((p, index) => session.addPlayer(p.name, colors[index % colors.length]));
 
   const stored: StoredGame = {
     id: session.id,
     name: session.name,
     board: session.board,
-    players: session.players.map((p) => ({
+    players: session.players.map((p, index) => ({
       id: p.id,
       name: p.name,
       color: p.color,
+      avatar: players[index]?.avatar,
       resources: p.resources,
       victoryPoints: p.victoryPoints,
+      developmentCards: [],
     })),
     rollHistory: session.rollHistory,
     status: session.status,

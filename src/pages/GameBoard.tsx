@@ -4,19 +4,31 @@ import { getGameById, updateGame } from '../services/gameStorage';
 import type { StoredGame, StoredPlayer } from '../services/gameStorage';
 import { rollDiceWithFallback } from '../services/diceService';
 import type { DiceResult } from '../models/IDiceRoller';
+import { drawRandomDevelopmentCard } from '../models/developmentCards';
+import type { DevelopmentCardDefinition } from '../models/developmentCards';
 import HexBoard from '../components/HexBoard';
 import Button from '../components/Button';
 import WinnerModal from '../components/WinnerModal';
 import './GameBoard.css';
 
-const MAX_ROLLS_PER_PLAYER = 15;
+const MAX_ROLLS_PER_PLAYER = 30;
+const WIN_POINTS_THRESHOLD = 5;
+const CARD_COST = { ruda: 1, ovca: 1, zito: 1 };
 
 const getTotalResources = (player: StoredPlayer): number =>
   Object.values(player.resources).reduce((sum, count) => sum + count, 0);
 
+const canAffordCard = (player: StoredPlayer): boolean =>
+  player.resources.ruda >= CARD_COST.ruda &&
+  player.resources.ovca >= CARD_COST.ovca &&
+  player.resources.zito >= CARD_COST.zito;
+
 const getWinner = (players: StoredPlayer[]): StoredPlayer | null => {
   if (players.length === 0) return null;
-  return [...players].sort((a, b) => getTotalResources(b) - getTotalResources(a))[0];
+  return [...players].sort((a, b) => {
+    if (b.victoryPoints !== a.victoryPoints) return b.victoryPoints - a.victoryPoints;
+    return getTotalResources(b) - getTotalResources(a);
+  })[0];
 };
 
 const GameBoard = () => {
@@ -28,6 +40,7 @@ const GameBoard = () => {
   const [lastRoll, setLastRoll] = useState<DiceResult | null>(null);
   const [rollSource, setRollSource] = useState<'random.org' | 'lokalno' | null>(null);
   const [showWinnerModal, setShowWinnerModal] = useState(false);
+  const [lastDrawnCard, setLastDrawnCard] = useState<DevelopmentCardDefinition | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -47,7 +60,11 @@ const GameBoard = () => {
     setLastRoll(result);
     setRollSource(source);
 
-    const updatedPlayers = game.players.map((p) => ({ ...p, resources: { ...p.resources } }));
+    const updatedPlayers = game.players.map((p) => ({
+      ...p,
+      resources: { ...p.resources },
+      developmentCards: [...(p.developmentCards ?? [])],
+    }));
     const currentPlayer = updatedPlayers[game.currentPlayerIndex ?? 0];
 
     const matchingTiles = game.board.filter(
@@ -81,6 +98,51 @@ const GameBoard = () => {
     }
   };
 
+  const handleBuyCard = () => {
+  if (!game || game.status === 'zavrsena') return;
+
+  const updatedPlayers = game.players.map((p) => ({
+    ...p,
+    resources: { ...p.resources },
+    developmentCards: [...(p.developmentCards ?? [])],
+  }));
+  const currentPlayer = updatedPlayers[game.currentPlayerIndex ?? 0];
+
+  if (!canAffordCard(currentPlayer)) {
+    window.alert('Nemaš dovoljno resursa. Potrebno: 1 ruda, 1 ovca, 1 žito.');
+    return;
+  }
+
+  currentPlayer.resources.ruda -= CARD_COST.ruda;
+  currentPlayer.resources.ovca -= CARD_COST.ovca;
+  currentPlayer.resources.zito -= CARD_COST.zito;
+
+  const card = drawRandomDevelopmentCard();
+
+  if (card.type === 'pobednicki-poen') {
+    currentPlayer.victoryPoints += 1;
+  } else {
+    currentPlayer.developmentCards.push(card.title);
+  }
+
+  setLastDrawnCard(card);
+
+  const hasWinner = currentPlayer.victoryPoints >= WIN_POINTS_THRESHOLD;
+
+  const updated: StoredGame = {
+    ...game,
+    players: updatedPlayers,
+    status: hasWinner ? 'zavrsena' : game.status,
+  };
+
+  updateGame(updated);
+  setGame(updated);
+
+  if (hasWinner) {
+    setShowWinnerModal(true);
+  }
+};
+
   if (notFound) {
     return (
       <div className="board-page">
@@ -112,8 +174,9 @@ const GameBoard = () => {
       </div>
 
       {isFinished && winner && (
-        <div className="game-over-banner">
-          🏆 Partija je završena! Pobednik: <strong>{winner.name}</strong> ({getTotalResources(winner)} resursa)
+  <div className="game-over-banner">
+    🏆 Partija je završena! Pobednik: <strong>{winner.name}</strong> sa {winner.victoryPoints} pobedničkih poena
+    {winner.victoryPoints < WIN_POINTS_THRESHOLD && ' (istekle runde, odlučeno po resursima)'}
           <button className="game-over-banner__replay" onClick={() => setShowWinnerModal(true)}>
             Prikaži ponovo 🎉
           </button>
@@ -132,9 +195,18 @@ const GameBoard = () => {
                 <p className="current-turn">
                   Na potezu: <strong>{currentPlayer?.name}</strong> · runda {currentRound} od {MAX_ROLLS_PER_PLAYER}
                 </p>
-                <Button onClick={handleRoll} disabled={rolling}>
-                  {rolling ? 'Bacanje...' : 'Baci kockice'}
-                </Button>
+                <div className="dice-section__actions">
+                  <Button onClick={handleRoll} disabled={rolling}>
+                    {rolling ? 'Bacanje...' : 'Baci kockice'}
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={handleBuyCard}
+                    disabled={!currentPlayer || !canAffordCard(currentPlayer)}
+                  >
+                    Kupi razvojnu kartu (1 ruda, 1 ovca, 1 žito)
+                  </Button>
+                </div>
               </div>
             ) : (
               <p className="current-turn">Partija je završena.</p>
@@ -149,6 +221,14 @@ const GameBoard = () => {
                 </span>
               </div>
             )}
+            {lastDrawnCard && (
+              <div className="card-draw-result">
+                Izvučena karta: <strong>{lastDrawnCard.title}</strong>
+                {lastDrawnCard.type === 'pobednicki-poen'
+                  ? ' — +1 pobednički poen!'
+                  : ' — dodata u ruku igrača'}
+              </div>
+            )}
           </div>
         </div>
 
@@ -160,7 +240,11 @@ const GameBoard = () => {
               className={`player-card ${!isFinished && index === game.currentPlayerIndex ? 'player-card--active' : ''} ${isFinished && winner?.id === player.id ? 'player-card--winner' : ''}`}
             >
               <div className="player-card__header">
-                <span className="player-card__dot" style={{ backgroundColor: player.color }} />
+                {player.avatar ? (
+                  <img src={player.avatar} alt={player.name} className="player-card__avatar" />
+                ) : (
+                  <span className="player-card__dot" style={{ backgroundColor: player.color }} />
+                )}
                 <span className="player-card__name">{player.name}</span>
                 {!isFinished && index === game.currentPlayerIndex && (
                   <span className="player-card__turn-badge">na potezu</span>
@@ -176,6 +260,10 @@ const GameBoard = () => {
                 <span>Ovca: {player.resources.ovca}</span>
                 <span>Ruda: {player.resources.ruda}</span>
               </div>
+              <div className="player-card__dev-info">
+                <span>🏆 {player.victoryPoints} pob. poena</span>
+                <span>🎴 {(player.developmentCards ?? []).length} razvojnih karata</span>
+              </div>
             </div>
           ))}
         </div>
@@ -184,6 +272,7 @@ const GameBoard = () => {
       {showWinnerModal && winner && (
         <WinnerModal
           winnerName={winner.name}
+          victoryPoints={winner.victoryPoints}
           totalResources={getTotalResources(winner)}
           onClose={() => setShowWinnerModal(false)}
         />

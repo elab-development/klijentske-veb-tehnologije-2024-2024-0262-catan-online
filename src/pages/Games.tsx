@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { useLocalGames } from '../hooks/useLocalGames';
+import { fetchRandomPlayers } from '../services/randomUserService';
 import GameCard from '../components/GameCard';
 import FormField from '../components/FormField';
 import Button from '../components/Button';
@@ -9,24 +11,39 @@ import './Games.css';
 const ITEMS_PER_PAGE = 4;
 
 const Games = () => {
+  const { user } = useAuth();
   const { games, createGame, deleteGame } = useLocalGames();
   const navigate = useNavigate();
 
   const [newGameName, setNewGameName] = useState('');
   const [playerCount, setPlayerCount] = useState(3);
+  const [creating, setCreating] = useState(false);
 
   const [statusFilter, setStatusFilter] = useState<'sve' | 'u toku' | 'zavrsena'>('sve');
   const [playerFilter, setPlayerFilter] = useState<'svi' | '2' | '3' | '4'>('svi');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const handleCreate = (e: React.FormEvent) => {
+  const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newGameName.trim()) return;
+    if (!newGameName.trim() || !user) return;
 
-    const playerNames = Array.from({ length: playerCount }, (_, i) => `Igrač ${i + 1}`);
-    createGame(newGameName.trim(), playerNames);
+    setCreating(true);
+
+    const botCount = playerCount - 1;
+    let bots: { name: string; avatar?: string }[];
+
+    try {
+      bots = botCount > 0 ? await fetchRandomPlayers(botCount) : [];
+    } catch {
+      bots = Array.from({ length: botCount }, (_, i) => ({ name: `Igrač ${i + 2}` }));
+    }
+
+    const players = [{ name: user.username }, ...bots];
+
+    createGame(newGameName.trim(), players);
     setNewGameName('');
     setCurrentPage(1);
+    setCreating(false);
   };
 
   const filteredGames = games.filter((game) => {
@@ -54,7 +71,7 @@ const Games = () => {
           onChange={(e) => setNewGameName(e.target.value)}
         />
         <div className="games-create__players">
-          <label className="form-field__label">Broj igrača</label>
+          <label className="form-field__label">Broj igrača (uključujući tebe)</label>
           <select
             value={playerCount}
             onChange={(e) => setPlayerCount(Number(e.target.value))}
@@ -65,7 +82,9 @@ const Games = () => {
             <option value={4}>4</option>
           </select>
         </div>
-        <Button type="submit">Nova partija</Button>
+        <Button type="submit" disabled={creating}>
+          {creating ? 'Kreiranje...' : 'Nova partija'}
+        </Button>
       </form>
 
       <div className="games-filters">

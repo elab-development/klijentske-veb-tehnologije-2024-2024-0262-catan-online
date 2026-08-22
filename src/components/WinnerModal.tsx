@@ -5,11 +5,12 @@ import './WinnerModal.css';
 
 interface WinnerModalProps {
   winnerName: string;
+  victoryPoints: number;
   totalResources: number;
   onClose: () => void;
 }
 
-const WinnerModal = ({ winnerName, totalResources, onClose }: WinnerModalProps) => {
+const WinnerModal = ({ winnerName, victoryPoints, totalResources, onClose }: WinnerModalProps) => {
   useEffect(() => {
     confetti({
       particleCount: 150,
@@ -24,7 +25,9 @@ const WinnerModal = ({ winnerName, totalResources, onClose }: WinnerModalProps) 
         <div className="winner-modal__trophy">🏆</div>
         <h2 className="winner-modal__title">Partija je završena!</h2>
         <p className="winner-modal__winner-name">{winnerName}</p>
-        <p className="winner-modal__subtitle">pobeđuje sa {totalResources} sakupljenih resursa</p>
+        <p className="winner-modal__subtitle">
+          {victoryPoints} pobedničkih poena · {totalResources} sakupljenih resursa
+        </p>
         <Button onClick={onClose}>Odlično!</Button>
       </div>
     </div>

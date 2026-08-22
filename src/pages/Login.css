@@ -63,3 +63,17 @@
   color: var(--color-primary);
   font-weight: bold;
 }
+
+@media (max-width: 600px) {
+  .login-page {
+    padding: 1.5rem;
+  }
+
+  .login-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .login-title {
+    font-size: 1.7rem;
+  }
+}

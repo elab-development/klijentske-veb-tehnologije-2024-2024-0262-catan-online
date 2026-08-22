@@ -63,3 +63,17 @@
   color: var(--color-primary);
   font-weight: bold;
 }
+
+@media (max-width: 600px) {
+  .register-page {
+    padding: 1.5rem;
+  }
+
+  .register-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .register-title {
+    font-size: 1.7rem;
+  }
+}

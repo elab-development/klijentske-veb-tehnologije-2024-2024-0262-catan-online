@@ -168,3 +168,27 @@
   font-weight: 700;
   white-space: nowrap;
 }
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 1.5rem;
+  }
+
+  .profile-card {
+    flex: 1 1 100%;
+  }
+
+  .profile-stats {
+    flex: 1 1 100%;
+  }
+
+  .profile-stats__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-recent__row {
+    grid-template-columns: 1fr;
+    text-align: left;
+    gap: 0.3rem;
+  }
+}

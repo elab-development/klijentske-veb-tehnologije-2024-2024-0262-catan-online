@@ -139,3 +139,34 @@
   padding: 0.15rem 0.5rem;
   border-radius: 10px;
 }
+
+
+
+.game-over-banner {
+  background-color: #e8f0d8;
+  color: #4a6741;
+  border: 1px solid #4a6741;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.game-over-banner__replay {
+  background: none;
+  border: 1px solid #4a6741;
+  color: #4a6741;
+  border-radius: 6px;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.player-card--winner {
+  border: 2px solid #4a6741;
+}
